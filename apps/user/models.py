@@ -1,6 +1,7 @@
 from flask_login import UserMixin, AnonymousUserMixin, login_user
 from sqlalchemy import Column, Integer, String, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from exts import db
 
@@ -33,6 +34,22 @@ class User(db.Model, UserMixin):
     def save():
         db.session.commit()
 
+    # 设置访问密码的方法,并用装饰器@property设置为属性,调用时不用加括号
+    @property
+    def pwd(self):
+        return self.password
+
+    # 设置加密的方法,传入密码,对类属性进行操作
+
+    @pwd.setter
+    def pwd(self, value):
+        self.password = generate_password_hash(value)
+
+    # 设置验证密码的方法
+
+    def check_password(self, user_pad):
+        return check_password_hash(self.password, user_pad)
+
 
 class MyAnonymousUser(AnonymousUserMixin):
     @property
@@ -47,7 +64,7 @@ class MyAnonymousUser(AnonymousUserMixin):
 
     @property
     def is_anonymous(self):
-        return False
+        return True
 
     def get_id(self):
         return User.query.filter_by(user_id=0).first()

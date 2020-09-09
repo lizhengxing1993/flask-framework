@@ -50,6 +50,9 @@ class Config(object):
     SQLALCHEMY_POOL_TIMEOUT = 15  # 连接超时时间
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # 使用flask-login匿名用户
+    IS_MOCK_LOGIN = True
+
 
 class DevConfig(Config):
     DEBUG = True

@@ -1,14 +1,12 @@
-import datetime
 import json
 import os
-import threading
 
-from flask import session, request, current_app, jsonify, make_response
-from tools import create_app, cache
+from flask import session, request, current_app
 
+from apps import create_app
+from exts import cache
 
 app = create_app()
-
 
 @app.route('/')
 def hello_world():
@@ -108,6 +106,7 @@ def after_app_request(response):
 
 @app.errorhandler(404)
 def error_404(e):
+    app.logger.debug(e)
     return '页面不存在'
 
 @app.errorhandler(500)
