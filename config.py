@@ -68,5 +68,5 @@ class PropConfig(Config):
     LOG_LEVEL = logging.WARNING
     # 连接的数据库
     SQLALCHEMY_DATABASE_URI = (
-        "postgresql+psycopg2://postgres:postgres@127.0.0.1:5432/skygc_test2"
+        "postgresql+psycopg2://postgres:postgres@127.0.0.1:5432/sample"
     )
