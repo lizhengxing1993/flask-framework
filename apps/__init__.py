@@ -29,6 +29,10 @@ def init_db():
     print("初始化用户")
 
 
+def register_blueprint(app):
+    app.register_blueprint(b_user, url_prefix='/user')
+
+
 def create_app():
 
     app = Flask(__name__)
@@ -41,7 +45,7 @@ def create_app():
         cache.init_app(app)
 
         # 注册蓝图
-        app.register_blueprint(b_user, url_prefix='/user')
+        register_blueprint(app)
 
         # 初始化日志-按天分隔
         handler = TimedRotatingFileHandler(

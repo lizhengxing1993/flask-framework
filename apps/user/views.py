@@ -6,6 +6,7 @@ from apps.user import b_user
 from apps.user.main import UserManager, gen_capcha
 
 
+
 @b_user.route('/', methods=['GET'])
 def user_():
     current_app.logger.debug('使用current_app写蓝图日志')

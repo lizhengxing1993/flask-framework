@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, current_user
 
 from apps.user.models import User
 from exts import db, login_manager
-from tools.helps import model_to_dict
+from tools.helps import model_to_dict, require_args
 from tools.timer import TimeManager
 
 
@@ -42,6 +42,7 @@ class UserManager(object):
         return jsonify({"code": 200, "message": "注册成功"})
 
     @classmethod
+    @require_args(['user_name', 'password', 'capcha'])
     def login(cls, user_name, password, capcha):
         if not UserManager.check_capcha(capcha):
             return jsonify({"code": 500, "message": "验证码错误错误"})
