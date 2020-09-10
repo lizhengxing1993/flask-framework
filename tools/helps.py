@@ -5,6 +5,9 @@ from flask import request, jsonify
 
 
 # 将model的结果转为字典格式 filters是要过滤掉不返回的字段
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
 def model_to_dict(result, filters=None):
     from collections import Iterable
     # 转换完成后，删除  '_sa_instance_state' 特殊属性
@@ -48,3 +51,14 @@ def require_args(*args_list):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+# 哈希加盐的密码加密方法
+class Encryption(object):
+    @classmethod
+    def enPassWord(cls, password):  # 将明密码转化为hash码
+        return generate_password_hash(password)  # 返回转换的hash码
+
+    @classmethod
+    def checkPassWord(cls, enpassword, password):  # 第一参数是从数据查询出来的hash值，第二参数是需要检验的密码
+        return check_password_hash(enpassword, password)  # 如果匹配返回true

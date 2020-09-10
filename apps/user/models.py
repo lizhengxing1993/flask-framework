@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from exts import db
+from tools.helps import Encryption
 
 
 class User(db.Model, UserMixin):
@@ -43,12 +44,12 @@ class User(db.Model, UserMixin):
 
     @pwd.setter
     def pwd(self, value):
-        self.password = generate_password_hash(value)
+        self.password = Encryption.enPassWord(value)
 
     # 设置验证密码的方法
 
     def check_password(self, user_pad):
-        return check_password_hash(self.password, user_pad)
+        return Encryption.checkPassWord(self.password, user_pad)
 
 
 class MyAnonymousUser(AnonymousUserMixin):
