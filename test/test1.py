@@ -7,4 +7,3 @@ LOG_PATH = os.path.join(PROJECT_DIR, "logs")
 print(PROJECT_APP_DIR)
 print(PROJECT_DIR)
 print(LOG_PATH)
-

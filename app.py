@@ -8,9 +8,9 @@ from exts import cache
 
 app = create_app()
 
+
 @app.route('/')
 def hello_world():
-
 
     return 'Hello World!'
 
@@ -86,11 +86,17 @@ def after_app_request(response):
     print(response)
     api_name = request.url
     response_data = response.json
-    if str(response.status_code).startswith('4') or str(response.status_code).startswith('5'):
-         log_format('E', api_name, response.status_code, str(response_data))
+    if str(response.status_code).startswith('4') or \
+            str(response.status_code).startswith('5'):
+        log_format('E', api_name, response.status_code, str(response_data))
     else:
-         log_format('I', api_name, response.status_code,  str(response_data) or None)
+        log_format(
+            'I',
+            api_name,
+            response.status_code,
+            str(response_data) or None)
     return response
+
 
 @app.teardown_request
 # def handle_teardown_request(response):
@@ -102,12 +108,11 @@ def after_app_request(response):
 #         response.__setattr__()
 #         return make_response(jsonify({"code":200}))
 #     return response
-
-
 @app.errorhandler(404)
 def error_404(e):
     app.logger.debug(e)
     return '页面不存在'
+
 
 @app.errorhandler(500)
 def error_500(e):
@@ -118,9 +123,8 @@ def error_500(e):
 def before_app_request():
     api_name = request.url
     try:
-       #收到的前端数据
         request_data = json.loads(request.get_data())
-    except Exception as e:
+    except Exception:
         request_data = request.form.to_dict()
     log_format('R', api_name, None, str(request_data))
 

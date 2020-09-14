@@ -22,14 +22,17 @@ class TimeManager(object):
     def str_to_timestamp(time_str, digit=13):
         """转时间戳,默认13位"""
         timestamp = (
-            int(time.mktime(time.strptime(time_str, "%Y-%m-%d %H:%M:%S"))) * 1000
+            int(
+                time.mktime(time.strptime(time_str, "%Y-%m-%d %H:%M:%S")))
+            * 1000
             if digit == 13
             else int(time.mktime(time.strptime(time_str, "%Y-%m-%d %H:%M:%S")))
         )
         return timestamp
 
     @staticmethod
-    def convert_str(time_str, fmt_from="%Y-%m-%d %H:%M:%S", fmt_to="%Y-%m-%d %H_%M_%S"):
+    def convert_str(time_str, fmt_from="%Y-%m-%d %H:%M:%S",
+                    fmt_to="%Y-%m-%d %H_%M_%S"):
         """时间字符串的格式转换"""
         return datetime.datetime.strptime(time_str, fmt_from).strftime(fmt_to)
 
@@ -54,7 +57,11 @@ class TimeManager(object):
             now = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
         if isinstance(now, int):
             now = (
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(now / 1000)))
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.localtime(
+                        float(
+                            now / 1000)))
                 if len(str(now)) == 13
                 else time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now))
             )
@@ -105,7 +112,8 @@ class TimeManager(object):
                 hour, minute, second = time_str.split(":")
             else:
                 hour, minute = time_str.split(":")
-        return int(year), int(month), int(day), int(hour), int(minute), int(second)
+        return int(year), int(month), int(day), int(
+            hour), int(minute), int(second)
 
     @staticmethod
     def month_first_day(next_month=False):
@@ -120,8 +128,10 @@ class TimeManager(object):
     @staticmethod
     def month_last_day(next_month=False):
         month_first_day = TimeManager.month_first_day(next_month)
-        month_days = calendar.monthrange(month_first_day.year, month_first_day.month)[1]
-        month_last_day = month_first_day + datetime.timedelta(days=month_days - 1)
+        month_days = calendar.monthrange(month_first_day.year,
+                                         month_first_day.month)[1]
+        month_last_day = month_first_day + \
+            datetime.timedelta(days=month_days - 1)
         return month_last_day
 
     @staticmethod
