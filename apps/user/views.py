@@ -6,7 +6,6 @@ from apps.user import b_user
 from apps.user.main import UserManager, gen_capcha
 
 
-
 @b_user.route('/', methods=['GET'])
 def user_():
     current_app.logger.debug('使用current_app写蓝图日志')
@@ -28,7 +27,8 @@ class UserView(views.MethodView):
         telephone = request.form.get('telephone')
         role_id = int(request.form.get('role_id'))
         job = request.form.get('job')
-        res = UserManager.register(user_name, real_name, password, email, telephone, role_id, job)
+        res = UserManager.register(user_name, real_name, password,
+                                   email, telephone, role_id, job)
         return res
 
 
@@ -63,4 +63,3 @@ class CapchaMethodView(views.MethodView):
         response = make_response(capcha_buf)
         response.headers["Content-Type"] = "image/gif"
         return response
-

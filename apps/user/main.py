@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, current_user
 
 from apps.user.models import User
 from exts import db, login_manager
-from tools.helps import model_to_dict, require_args
+from tools.helps import model_to_dict
 from tools.timer import TimeManager
 
 
@@ -20,12 +20,13 @@ def load_user(user_id):
 class UserManager(object):
 
     @classmethod
-    def verify_existence(self, user_name):
+    def verify_existence(cls, user_name):
         user = User.query.filter_by(user_name=user_name, is_delete=0).first()
         return True if user else False
 
     @classmethod
-    def register(cls, user_name, real_name, password, email, telephone, role_id, job):
+    def register(cls, user_name, real_name, password,
+                 email, telephone, role_id, job):
         if UserManager.verify_existence(user_name):
             return jsonify({"code": 400, "message": "用户已存在，请更换用户名"})
         user = User()
@@ -42,7 +43,6 @@ class UserManager(object):
         return jsonify({"code": 200, "message": "注册成功"})
 
     @classmethod
-    @require_args(['user_name', 'password', 'capcha'])
     def login(cls, user_name, password, capcha):
         if not UserManager.check_capcha(capcha):
             return jsonify({"code": 500, "message": "验证码错误错误"})
@@ -72,7 +72,8 @@ class UserManager(object):
         users = query.limit(limit).offset(offset).all()
         filters = ['password', 'create_person']
         data = model_to_dict(users, filters)
-        return jsonify({"code": 200, "message": "成功", "total": total, "data": data})
+        return jsonify({"code": 200, "message": "成功",
+                        "total": total, "data": data})
 
     # 验证码验证
     @classmethod
@@ -90,10 +91,13 @@ def gen_capcha():
     font_size = 16
     font_color = ["black", "darkblue", "darkred"]
     codes = "123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-    background = (randrange(230, 255), randrange(230, 255), randrange(230, 255))
-    line_color = (randrange(0, 255), randrange(0, 255), randrange(0, 255))
+    background = (randrange(230, 255), randrange(230, 255),
+                  randrange(230, 255))
+    line_color = (randrange(0, 255), randrange(0, 255),
+                  randrange(0, 255))
     sample_file = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "lib/LucidaSansDemiOblique.ttf"
+        os.path.dirname(os.path.realpath(__file__)
+                        ), "lib/LucidaSansDemiOblique.ttf"
     )
     font = ImageFont.truetype(sample_file, font_size)
     img = Image.new("RGB", (img_width, img_height), background)

@@ -1,6 +1,3 @@
-from flask import Flask, jsonify
-
-
 # 定义100 - 500错误码
 class StatusCode(object):
 
@@ -67,6 +64,8 @@ class StatusCode(object):
     HTTP_511_NETWORK_AUTHENTICATION_REQUIRED = 511
 
 # 定义一个异常类，继承Exception，
+
+
 class APIException(Exception):
     status = 'INTERNAL'
     StatusCode = 400
@@ -79,7 +78,8 @@ class APIException(Exception):
     }
     debug = None
 
-    def __init__(self, detail=None): # 初始化对象接收异常参数，传字典格式进来
+    # 初始化对象接收异常参数，传字典格式进来
+    def __init__(self, detail=None):
         if not detail:
             return
         self.details = []
@@ -98,6 +98,8 @@ class APIException(Exception):
         return self.message
 
 # 下面是定义每个异常的错误类型
+
+
 class InvalidArgumentError(APIException):
     status = 'INVALID_ARGUMENT'
     StatusCode = StatusCode.HTTP_404_NOT_FOUND
@@ -183,6 +185,8 @@ class DeadlineExceededError(APIException):
     StatusCode = StatusCode.HTTP_504_GATEWAY_TIMEOUT
 
 # 定义一个装饰器，处理异常
+
+
 def return_error(func):
     def wrapper(*args, **kwargs):
         try:
@@ -192,6 +196,8 @@ def return_error(func):
     return wrapper
 
 # 给函数做装饰
+
+
 @return_error
 def func1(error=True):
     if error:
@@ -208,4 +214,3 @@ def func1(error=True):
 # if __name__ == '__main__':
 #     app.run(host="0.0.0.0", debug=True)
 #
-

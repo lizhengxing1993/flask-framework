@@ -13,7 +13,8 @@ def model_to_dict(result, filters=None):
     # 转换完成后，删除  '_sa_instance_state' 特殊属性
     try:
         if isinstance(result, Iterable):
-            tmp = [dict(zip(res.__dict__.keys(), res.__dict__.values())) for res in result if res]
+            tmp = [dict(zip(res.__dict__.keys(), res.__dict__.values()))
+                   for res in result if res]
             for t in tmp:
                 t.pop('_sa_instance_state')
                 if filters:
@@ -59,6 +60,7 @@ class Encryption(object):
     def enPassWord(cls, password):  # 将明密码转化为hash码
         return generate_password_hash(password)  # 返回转换的hash码
 
+    # 第一参数是从数据查询出来的hash值，第二参数是需要检验的密码
     @classmethod
-    def checkPassWord(cls, enpassword, password):  # 第一参数是从数据查询出来的hash值，第二参数是需要检验的密码
+    def checkPassWord(cls, enpassword, password):
         return check_password_hash(enpassword, password)  # 如果匹配返回true

@@ -1,7 +1,6 @@
 from flask_login import UserMixin, AnonymousUserMixin, login_user
 from sqlalchemy import Column, Integer, String, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from exts import db
 from tools.helps import Encryption
@@ -29,7 +28,8 @@ class User(db.Model, UserMixin):
         server_default="2",
         comment="审核状态, 0:表示未通过审核，1表示通过审核, 2未审核",
     )
-    create_person = Column(Integer, server_default="0", comment="创建人，用来区分是否第一次登录强制更换密码 0:注册 1:管理员创建")
+    create_person = Column(Integer, server_default="0",
+                           comment="创建人，用来区分是否第一次登录强制更换密码 0:注册 1:管理员创建")
 
     @staticmethod
     def save():
